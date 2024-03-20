@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
-import { Box, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack } from "native-base";
+import { Box, Button, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack } from "native-base";
 
 import bg from "../assets/bg.png"
 import logo from "../assets/logo.png"
@@ -34,11 +34,11 @@ export default function Page() {
               <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'} color={"#8c8c8c"}>Uma maneira de controlar a conta da saideira.</Text>
             </VStack>
           </VStack>
-          <Pressable width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
-            <Link replace href="/signIn">
-              <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'}>Vamos começar</Text>
-            </Link>
-          </Pressable>
+          <Link replace href="/signIn">
+            <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
+                <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'}>Vamos começar</Text>
+            </Button>
+          </Link>
         </VStack>
       </ZStack>
     </NativeBaseProvider>
