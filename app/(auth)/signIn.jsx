@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
 
-import { Box, Button, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack } from "native-base";
+import { Box, Button, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack, Icon, Input } from "native-base";
 
 import bg from "../../assets/bg.png"
 import logo from "../../assets/logo.png"
+
+import { AtSign, RectangleEllipsis } from 'lucide-react-native';
 
 export default function Home() {
   return (
@@ -28,9 +30,28 @@ export default function Home() {
             />
             <Text fontSize={'32px'} fontWeight={'medium'} color={"white"} pt={"12px"}>Controle a conta da festa!</Text>
           </View>
-          <View bgColor={'white'} width={"full"} height={"500px"} paddingX={"12px"} borderTopLeftRadius={"md"} borderTopRightRadius={"md"}>
-            <Text fontSize={'24px'} fontWeight={'medium'} color={"#575960"} pt={"12px"}>Login</Text>
-          </View>
+          <VStack bgColor={'#f5f7f9'} width={"full"} height={"500px"} paddingX={"12px"} py={8} borderTopLeftRadius={"md"} borderTopRightRadius={"md"} justifyContent={'space-between'}>
+            <Text fontSize={'24px'} fontWeight={'medium'} color={"#575960"}>Login</Text>
+            <VStack space={4}>
+              <Input variant="outline" placeholder="E-mail" placeholderTextColor={"#575960"} bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<AtSign size={18} color={"#575960"}/>} px={4}/>}/>
+              <Input variant="outline" placeholder="Senha" placeholderTextColor={"#575960"} bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<RectangleEllipsis size={18} color={"#575960"}/>} px={4}/>}/>
+            </VStack>
+            <Link href="/" asChild>
+              <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"#0b0c10"} rounded={"md"}>
+                  <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'} color={"white"}>Entrar</Text>
+              </Button>
+            </Link>
+
+            <Link href="/" asChild>
+              <Button bgColor={"#f6f7f9"} rounded={"md"} width={"120px"} padding={0} margin={0}>
+                <Text alignSelf={'flex-start'} fontSize={'md'} fontWeight={'normal'} color={"#505050"} py={4}>Esqueci a senha</Text>
+              </Button>
+            </Link>
+
+            <Link href="/" asChild>
+              <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'} color={"#505050"}>Não tem conta? <Text underline>Cadastre-se aqui</Text></Text>
+            </Link>
+          </VStack>
         </VStack>
       </ZStack>
     </NativeBaseProvider>

@@ -34,7 +34,7 @@ export default function Page() {
               <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'} color={"#8c8c8c"}>Uma maneira de controlar a conta da saideira.</Text>
             </VStack>
           </VStack>
-          <Link replace href="/signIn">
+          <Link replace href="/signIn" asChild>
             <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
                 <Text alignSelf={"center"} fontSize={'md'} fontWeight={'normal'}>Vamos começar</Text>
             </Button>
