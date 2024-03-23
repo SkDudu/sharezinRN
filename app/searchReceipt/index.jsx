@@ -3,7 +3,7 @@ import { Link } from 'expo-router';
 import { Search } from 'lucide-react-native';
 import { Button, HStack, Icon, Input, StatusBar, Text, VStack } from 'native-base';
 
-import CardReceiptSearch from '../../../components/cardReceiptSearch';
+import CardReceiptSearch from '../components/cardReceiptSearch';
 
 export default function index() {
   return (
