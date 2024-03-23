@@ -1,10 +1,12 @@
+import { Link } from "expo-router";
 import { MapPin, Pin, ReceiptText } from "lucide-react-native";
-import { Badge, HStack, NativeBaseProvider, Text, VStack, View } from "native-base";
+import { Badge, HStack, NativeBaseProvider, Pressable, Text, VStack, View } from "native-base";
 
 export default function cardReceipt() {
   return (
     <NativeBaseProvider>
-        <VStack bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
+      <Link href="/receiptDetails" asChild>
+        <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
           <HStack justifyContent={"space-between"}>
             <HStack alignItems={"center"} space={1}>
               <ReceiptText color={"black"} size={22}/>
@@ -20,7 +22,8 @@ export default function cardReceipt() {
             <Badge borderRadius={10} fontSize={14} px={4} py={2}>Dono</Badge>
             <Badge borderRadius={10} fontSize={14} px={4} py={2}>Novo</Badge>
           </HStack>
-        </VStack>
+        </Pressable>
+      </Link>
     </NativeBaseProvider>
   )
 }

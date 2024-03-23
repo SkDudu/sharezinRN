@@ -9,12 +9,12 @@ export default function newReceipt() {
       <VStack height={'full'} pt={4} pb={10} px={3} space={3} justifyContent={'space-between'}>
         <VStack>
             <View bgColor={"black"} rounded={'md'} p={2}>
-            <HStack space={3}>
-                <VStack space={1}>
-                <Text fontSize={"22px"} fontWeight={'medium'} color={"white"}>Conta do praiow</Text>
-                <Text fontSize={"14"} fontWeight={'normal'} color={"white"}>Responsável: Bágri</Text>
-                </VStack>
-            </HStack>
+                <HStack space={3}>
+                    <VStack space={1}>
+                    <Text fontSize={"22px"} fontWeight={'medium'} color={"white"}>Conta do praiow</Text>
+                    <Text fontSize={"14"} fontWeight={'normal'} color={"white"}>Responsável: Bágri</Text>
+                    </VStack>
+                </HStack>
             </View>
             <View bgColor={"#ececec"} rounded={'md'} p={2}>
             <HStack>
