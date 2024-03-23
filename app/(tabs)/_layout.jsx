@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Tabs } from 'expo-router';
-import { Home, ReceiptText } from 'lucide-react-native';
+import { Home, ReceiptText, SquareUserRound } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -19,6 +19,14 @@ export default function TabLayout() {
           options={{
             title: 'Contas fechadas',
             tabBarIcon: ({ color }) => <ReceiptText size={20} color={color} />,
+            headerShown: false,
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Perfil',
+            tabBarIcon: ({ color }) => <SquareUserRound size={20} color={color} />,
             headerShown: false,
           }}
         />
