@@ -7,7 +7,7 @@ export default function cardReceipt() {
     <NativeBaseProvider>
       <Link href="/receiptDetails" asChild>
         <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
-          <HStack justifyContent={"space-between"}>
+          <HStack justifyContent={"space-between"} pb={2}>
             <HStack alignItems={"center"} space={1}>
               <ReceiptText color={"black"} size={22}/>
               <Text fontSize={14} fontWeight={"normal"}>Conta do praiow</Text>
