@@ -5,7 +5,7 @@ import { Badge, HStack, NativeBaseProvider, Pressable, Text, VStack, View } from
 export default function cardReceiptClosed() {
   return (
     <NativeBaseProvider>
-        <Link href="/receiptClosed/infoReceipt" asChild>
+        <Link href="/infoReceipt" asChild>
           <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
             <HStack justifyContent={"space-between"}>
               <HStack alignItems={"center"} space={1}>
