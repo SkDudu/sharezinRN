@@ -2,12 +2,30 @@ import { Stack } from 'expo-router';
 
 export default function Layout() {
   return (
-    <Stack screenOptions={{headerShown: false}}>
+    <Stack>
       <Stack.Screen 
         name="signIn"
         options={{
           title: 'Sign In',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen 
+        screenOptions={{headerShown: true}}
+        name="signUp"
+        options={{
+          title: 'Cadastro',
+          headerShadowVisible: false,
+        }}
+      />
+
+      <Stack.Screen 
+        screenOptions={{headerShown: true}}
+        name="forgotPass"
+        options={{
+          title: 'Esqueci a senha',
+          headerShadowVisible: false,
         }}
       />
     </Stack>
