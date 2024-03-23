@@ -3,11 +3,13 @@ import { EllipsisVertical, Music4, Percent } from 'lucide-react-native';
 
 import { Button, HStack, Icon, IconButton, StatusBar, Text, VStack, View } from 'native-base';
 
+import CardParticipant from '../../../components/cardParticipant';
+
 export default function index() {
   return (
     <>
       <StatusBar barStyle={'dark-content'} />
-      <VStack px={3} space={4}>
+      <VStack mt={3} px={3} space={4}>
         <View bgColor={"black"} rounded={'md'} p={2}>
           <HStack justifyContent={'space-between'}>
             <VStack space={1}>
@@ -54,6 +56,7 @@ export default function index() {
         </View>
         <View>
           <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Participantes</Text>
+          <CardParticipant />
         </View>
       </VStack>
     </>
