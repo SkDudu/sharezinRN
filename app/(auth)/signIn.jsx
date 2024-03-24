@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Alert } from 'react-native';
 import { AtSign, RectangleEllipsis } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Link, router } from 'expo-router';
