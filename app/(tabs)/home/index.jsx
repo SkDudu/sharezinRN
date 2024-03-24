@@ -1,9 +1,32 @@
+import { useEffect, useState } from 'react';
 import { Link, router } from 'expo-router';
+
+import {supabase} from "../../../lib/supabase"
+
 import { Plus, PlusCircle } from 'lucide-react-native';
-import { Button, Fab, HStack, Icon, StatusBar, Text, VStack } from 'native-base';
+import { Button, Fab, FlatList, HStack, Icon, StatusBar, Text, VStack } from 'native-base';
+
 import CardReceipt from '../../components/cardReceipt'
 
 export default function Home() {
+  const [receiptData, setReceiptData] = useState()
+
+  useEffect(() => {
+    async function fetchReceipts(){
+      const { data, error } = await supabase
+      .from('receipt')
+      .select("*")
+
+      if(data){
+        setReceiptData(data)
+      }else{
+        Alert.alert(error.message)
+      }
+    }
+
+    fetchReceipts()
+  }, [])
+
   return (
     <>
       <StatusBar barStyle={'dark-content'} />
@@ -20,7 +43,9 @@ export default function Home() {
         
         <VStack space={2}>
           <Text fontSize={20} fontWeight={"normal"}>Contas abertas</Text>
-          <CardReceipt />
+          <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item}/>}
+
+          />
         </VStack>
       </VStack>
       <Button onPress={() => {router.push("/newReceipt")}} width={"60px"} height={"60px"} bgColor={"black"} shadow={2} borderRadius={'full'} top={450} left={300}>
