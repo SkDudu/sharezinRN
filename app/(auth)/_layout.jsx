@@ -11,7 +11,7 @@ export default function Layout() {
         }}
       />
 
-      <Stack.Screen 
+       <Stack.Screen 
         screenOptions={{headerShown: true}}
         name="signUp"
         options={{

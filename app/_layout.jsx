@@ -9,7 +9,6 @@ export default function Layout() {
           name="index"
           options={{
             title: 'Sign In',
-            tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
           }}
         />
       </Stack>
