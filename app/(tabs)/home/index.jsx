@@ -3,7 +3,7 @@ import { Plus, PlusCircle } from 'lucide-react-native';
 import { Button, Fab, HStack, Icon, StatusBar, Text, VStack } from 'native-base';
 import CardReceipt from '../../components/cardReceipt'
 
-export default async function Home() {
+export default function Home() {
   return (
     <>
       <StatusBar barStyle={'dark-content'} />
