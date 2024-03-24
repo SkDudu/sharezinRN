@@ -2,21 +2,21 @@ import { Link } from "expo-router";
 import { MapPin, Pin, ReceiptText } from "lucide-react-native";
 import { Badge, HStack, NativeBaseProvider, Pressable, Text, VStack, View } from "native-base";
 
-export default function cardReceipt() {
+export default function cardReceipt(item) {
   return (
     <NativeBaseProvider>
-      <Link href="/receiptDetails" asChild>
+      <Link href={{pathname: "/receiptDetails", params: {receiptId: item.id}}} asChild>
         <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
           <HStack justifyContent={"space-between"} pb={2}>
             <HStack alignItems={"center"} space={1}>
               <ReceiptText color={"black"} size={22}/>
-              <Text fontSize={14} fontWeight={"normal"}>Conta do praiow</Text>
+              <Text fontSize={14} fontWeight={"normal"}>{item.name_receipt}</Text>
             </HStack>
-            <Text fontSize={12} fontWeight={"normal"}>22/03/2024</Text>
+            <Text fontSize={12} fontWeight={"normal"}>{item.created_at}</Text>
           </HStack>
           <HStack alignItems={"center"} space={1}>
             <MapPin color={"#717171"} size={18}/>
-            <Text color={"#717171"}>Aldeota</Text>
+            <Text color={"#717171"}>{item.restaurant_name}</Text>
           </HStack>
           <HStack alignItems={"center"} space={1} pt={3}>
             <Badge borderRadius={10} fontSize={14} px={4} py={2}>Dono</Badge>

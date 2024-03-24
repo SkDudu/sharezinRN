@@ -1,17 +1,47 @@
-import React from 'react';
-import { Link } from 'expo-router';
-import { EllipsisVertical, Music4, Pencil, Percent, PlusCircle, ReceiptIcon, ReceiptText, SquareArrowOutUpRight, SquareX } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocalSearchParams  } from 'expo-router';
 
+import {supabase} from "../../lib/supabase"
+
+import { EllipsisVertical, Music4, Pencil, Percent, PlusCircle, ReceiptIcon, ReceiptText, SquareArrowOutUpRight, SquareX } from 'lucide-react-native';
 import { Actionsheet, AlertDialog, Button, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose } from 'native-base';
 
 import CardParticipant from '../../app/components/cardParticipant';
 
 export default function index() {
+  const { receiptId } = useLocalSearchParams();
   const {isOpen, onOpen, onClose} = useDisclose();
   
   const [isOpenDialog, setIsOpen] = React.useState(false);
   const onCloseDialog = () => setIsOpen(false);
   const cancelRef = React.useRef(null);
+
+  const [name_receipt, setName_receipt] = useState()
+  const [restaurant_name, setRestaurant_name] = useState()
+  const [const_total, setConst_total] = useState()
+  const [tax_garcom, setTax_garcom] = useState()
+  const [tax_cover, setTax_cover] = useState()
+
+  useEffect(() => {
+    async function fetchReceiptById(){
+      const { data, error } = await supabase
+      .from('receipt')
+      .select("*")
+      .eq('id', receiptId)
+
+      if(data !== null && data !== undefined){
+        setName_receipt(data[0].name_receipt)
+        setRestaurant_name(data[0].restaurant_name)
+        setConst_total(data[0].const_total)
+        setTax_cover(data[0].tax_cover)
+        setTax_garcom(data[0].tax_garcom)
+      }else{
+        Alert.alert(error.message)
+      }
+    }
+
+    fetchReceiptById()
+  }, [])
 
   return (
     <>
@@ -20,14 +50,14 @@ export default function index() {
         <View bgColor={"black"} rounded={'md'} p={2}>
           <HStack justifyContent={'space-between'}>
             <VStack space={1}>
-              <Text fontSize={"22px"} fontWeight={'medium'} color={"white"}>Conta do praiow</Text>
-              <Text fontSize={"14"} fontWeight={'normal'} color={"white"}>Responsável: Bágri</Text>
+              <Text fontSize={"22px"} fontWeight={'medium'} color={"white"}>{name_receipt}</Text>
+              <Text fontSize={"14"} fontWeight={'normal'} color={"white"}>{restaurant_name}</Text>
             </VStack>
             <IconButton onPress={onOpen} icon={<Icon as={<EllipsisVertical color={"white"} size={18}/>} />}/>
           </HStack>
           <VStack alignItems={'center'} mt={6}>
             <Text fontSize={"12"} fontWeight={'normal'} color={"white"}>Seu consumo total</Text>
-            <Text fontSize={"40"} fontWeight={'normal'} color={"white"}>R$ 0</Text>
+            <Text fontSize={"40"} fontWeight={'normal'} color={"white"}>{const_total}</Text>
           </VStack>
             <Link href="/receiptDetails/addCost" asChild>
                 <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
@@ -54,7 +84,7 @@ export default function index() {
                     <Percent size={18} color={"black"}/>
                     <Text fontSize={"18"} fontWeight={'normal'} color={"black"}>Taxa garçom</Text>
                   </HStack>
-                  <Text fontSize={"16"} fontWeight={'normal'} color={"#4e4e4e"}>10%</Text>
+                  <Text fontSize={"16"} fontWeight={'normal'} color={"#4e4e4e"}>{tax_garcom}</Text>
                 </VStack>
               </View>
               <View w={"49%"} bgColor={"white"} borderColor={"#eaeaea"} borderWidth={1} borderRadius={"md"} p={3}>
@@ -63,7 +93,7 @@ export default function index() {
                     <Music4 size={18} color={"black"}/>
                     <Text fontSize={"18"} fontWeight={'normal'} color={"black"}>Cover</Text>
                   </HStack>
-                  <Text fontSize={"16"} fontWeight={'normal'} color={"#4e4e4e"}>R$ 15,00</Text>
+                  <Text fontSize={"16"} fontWeight={'normal'} color={"#4e4e4e"}>{tax_cover}</Text>
                 </VStack>
               </View>
             </HStack>
