@@ -4,9 +4,9 @@ import { Link, useLocalSearchParams  } from 'expo-router';
 import {supabase} from "../../lib/supabase"
 
 import { EllipsisVertical, Music4, Pencil, Percent, PlusCircle, ReceiptIcon, ReceiptText, SquareArrowOutUpRight, SquareX } from 'lucide-react-native';
-import { Actionsheet, AlertDialog, Button, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose } from 'native-base';
+import { Actionsheet, AlertDialog, Button, FlatList, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose } from 'native-base';
 
-import CardParticipant from '../../app/components/cardParticipant';
+import CardParticipantHistoric from '../components/cardParticipantHistoric';
 
 export default function index() {
   const { receiptId } = useLocalSearchParams();
@@ -16,17 +16,21 @@ export default function index() {
   const onCloseDialog = () => setIsOpen(false);
   const cancelRef = React.useRef(null);
 
+  //Receipts
   const [name_receipt, setName_receipt] = useState()
   const [restaurant_name, setRestaurant_name] = useState()
   const [const_total, setConst_total] = useState()
   const [tax_garcom, setTax_garcom] = useState()
   const [tax_cover, setTax_cover] = useState()
 
+  //Historic
+  const [historicData, setHistoricData] = useState()
+
   useEffect(() => {
     async function fetchReceiptById(){
       const { data, error } = await supabase
       .from('receipt')
-      .select("*")
+      .select()
       .eq('id', receiptId)
 
       if(data !== null && data !== undefined){
@@ -40,7 +44,21 @@ export default function index() {
       }
     }
 
+    async function fetchHsitoricByReceiptId(){
+      const {data, error} = await supabase
+      .from('historic')
+      .select()
+      .eq("receipt_id", receiptId)
+
+      if(data !== null && data !== undefined){
+        //console.log("Historico de pedidos", data)
+        setHistoricData(data)
+        setCostOrder(data[0].cost_parcial)
+      }
+    }
+
     fetchReceiptById()
+    fetchHsitoricByReceiptId()
   }, [])
 
   return (
@@ -100,8 +118,8 @@ export default function index() {
           </View>
         </View>
         <View>
-          <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Participantes</Text>
-          <CardParticipant />
+          <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Histórico de pedidos</Text>
+          <FlatList data={historicData} keyExtractor={item => item.id} renderItem={({item}) => <CardParticipantHistoric {...item}/>}/>
         </View>
       </VStack>
       <Actionsheet isOpen={isOpen} onClose={onClose}>

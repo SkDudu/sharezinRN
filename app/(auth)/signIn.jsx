@@ -24,6 +24,7 @@ export default function singIn() {
 
     if(error){
       Alert.alert(error.message)
+      setLoading(false)
     }else{
       router.replace("/home")
     }

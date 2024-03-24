@@ -1,7 +1,7 @@
 import { MapPin, Pin, ReceiptText, Clock } from "lucide-react-native";
 import { Avatar, Badge, HStack, NativeBaseProvider, Text, VStack, View } from "native-base";
 
-export default function cardParticipant() {
+export default function cardParticipantHistoric(item) {
   return (
     <NativeBaseProvider>
         <View bgColor={"white"} h={"85px"} borderColor={"#eaeaea"} borderWidth={1} borderRadius={"md"} p={3}>
@@ -21,7 +21,7 @@ export default function cardParticipant() {
                         </HStack>
                     </VStack>
                 </View>
-                <Text fontSize={20} fontWeight={"normal"}>R$ 24,38</Text>
+                <Text fontSize={20} fontWeight={"normal"}>{item.cost_parcial}</Text>
             </HStack>
         </View>
     </NativeBaseProvider>
