@@ -25,7 +25,7 @@ export default function SignUp() {
     if(error){
       Alert.alert(error.message)
     }else{
-      router.replace("/home")
+      router.replace("/signIn")
     }
     setLoading(false)
   }
