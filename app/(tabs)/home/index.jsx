@@ -10,6 +10,7 @@ import CardReceipt from '../../components/cardReceipt'
 
 export default function Home() {
   const [receiptData, setReceiptData] = useState()
+  const [userId, setUserId] = useState()
 
   useEffect(() => {
     async function fetchReceipts(){
@@ -24,6 +25,13 @@ export default function Home() {
       }
     }
 
+    async function getUser(){
+      const { data: { user } } = await supabase.auth.getUser()
+      //console.log('user data', user.id)
+      setUserId(user.id)
+    }
+
+    getUser()
     fetchReceipts()
   }, [])
 
@@ -48,9 +56,7 @@ export default function Home() {
           />
         </VStack>
       </VStack>
-      <Button onPress={() => {router.push("/newReceipt")}} width={"60px"} height={"60px"} bgColor={"black"} shadow={2} borderRadius={'full'} top={450} left={300}>
-        <Plus color={"white"}/>
-      </Button>
+      <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: userId})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
     </>
   )
 }
