@@ -1,14 +1,35 @@
+import { useState } from 'react';
+import { AtSign, RectangleEllipsis } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+
+import {supabase} from "../../lib/supabase"
 
 import { Box, Button, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack, Icon, Input } from "native-base";
 
 import bg from "../../assets/bg.png"
 import logo from "../../assets/logo.png"
 
-import { AtSign, RectangleEllipsis } from 'lucide-react-native';
-
 export default function singIn() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  async function signIn(){
+    setLoading(true)
+    const {error} = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    })
+
+    if(error){
+      Alert.alert(error.message)
+    }else{
+      router.replace("/home")
+    }
+    setLoading(false)
+  }
+
   return (
     <NativeBaseProvider>
       <StatusBar style="light" />
@@ -33,14 +54,12 @@ export default function singIn() {
           <VStack bgColor={'#f5f7f9'} width={"full"} height={"500px"} paddingX={"12px"} py={8} borderTopLeftRadius={"md"} borderTopRightRadius={"md"} justifyContent={'space-between'}>
             <Text fontSize={'24px'} fontWeight={'medium'} color={"#575960"}>Login</Text>
             <VStack space={4}>
-              <Input variant="outline" placeholder="E-mail" placeholderTextColor={"#575960"} bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<AtSign size={18} color={"#575960"}/>} px={4}/>}/>
-              <Input variant="outline" placeholder="Senha" placeholderTextColor={"#575960"} bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<RectangleEllipsis size={18} color={"#575960"}/>} px={4}/>}/>
+              <Input value={email} onChangeText={setEmail} variant="outline" placeholder="E-mail" placeholderTextColor={"#575960"} keyboardType='email-address' bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<AtSign size={18} color={"#575960"}/>} px={4}/>}/>
+              <Input value={password} onChangeText={setPassword} variant="outline" placeholder="Senha" placeholderTextColor={"#575960"} bgColor={"white"} fontSize={'md'} autoCapitalize='none' borderColor={"#eaeaea"} borderRadius={6} height={"54px"} px={0} InputLeftElement={<Icon as={<RectangleEllipsis size={18} color={"#575960"}/>} px={4}/>}/>
             </VStack>
-            <Link href="/home" asChild>
-              <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"#0b0c10"} rounded={"md"}>
-                  <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"white"}>Entrar</Text>
-              </Button>
-            </Link>
+            <Button onPress={() => {signIn()}} disabled={loading} width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"#0b0c10"} rounded={"md"}>
+              <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"white"}>{loading ? "Entrando..." : "Entrar"}</Text>
+            </Button>
 
             <Link href="/forgotPass" asChild>
               <Button bgColor={"#f6f7f9"} rounded={"md"} width={"120px"} padding={0} margin={0}>
