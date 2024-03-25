@@ -19,7 +19,7 @@ export default function index() {
   //Receipts
   const [name_receipt, setName_receipt] = useState()
   const [restaurant_name, setRestaurant_name] = useState()
-  const [const_total, setConst_total] = useState()
+  const [cost_total, setConst_total] = useState()
   const [tax_garcom, setTax_garcom] = useState()
   const [tax_cover, setTax_cover] = useState()
 
@@ -36,7 +36,7 @@ export default function index() {
       if(data !== null && data !== undefined){
         setName_receipt(data[0].name_receipt)
         setRestaurant_name(data[0].restaurant_name)
-        setConst_total(data[0].const_total)
+        setConst_total(data[0].cost_total)
         setTax_cover(data[0].tax_cover)
         setTax_garcom(data[0].tax_garcom)
       }else{
@@ -75,7 +75,7 @@ export default function index() {
           </HStack>
           <VStack alignItems={'center'} mt={6}>
             <Text fontSize={"12"} fontWeight={'normal'} color={"white"}>Seu consumo total</Text>
-            <Text fontSize={"40"} fontWeight={'normal'} color={"white"}>{const_total}</Text>
+            <Text fontSize={"40"} fontWeight={'normal'} color={"white"}>{cost_total}</Text>
           </VStack>
             <Link href="/receiptDetails/addCost" asChild>
                 <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>

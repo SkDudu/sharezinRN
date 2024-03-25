@@ -7,33 +7,44 @@ import { Plus, PlusCircle } from 'lucide-react-native';
 import { Button, Fab, FlatList, HStack, Icon, StatusBar, Text, VStack } from 'native-base';
 
 import CardReceipt from '../../components/cardReceipt'
+import { Alert } from 'react-native';
 
 export default function Home() {
   const [receiptData, setReceiptData] = useState()
   const [userId, setUserId] = useState()
 
-  useEffect(() => {
-    async function fetchReceipts(){
-      const { data, error } = await supabase
-      .from('receipt')
-      .select("*")
-
-      if(data){
-        setReceiptData(data)
-      }else{
-        Alert.alert(error.message)
-      }
+  async function getUser(){
+    const { data: { user } } = await supabase.auth.getUser()
+    //console.log('user data', user.id)
+    if(user !== undefined){
+      setUserId(user?.id)
     }
+  }
 
-    async function getUser(){
-      const { data: { user } } = await supabase.auth.getUser()
-      //console.log('user data', user.id)
-      setUserId(user.id)
+  useEffect(() => {
+    const user = userId ? userId : undefined
+    if(user !== undefined){
+      async function fetchReceipts(){
+        const { data, error } = await supabase
+        .from('receipt')
+        .select("*")
+        .eq('user', user)
+  
+        if(data !== undefined){
+          setReceiptData(data)
+        }else{
+          Alert.alert(error.message)
+        }
+      }
+      
+      fetchReceipts()
     }
 
     getUser()
     fetchReceipts()
-  }, [])
+  }, [userId])
+
+  console.log("home", userId)
 
   return (
     <>
@@ -56,7 +67,7 @@ export default function Home() {
           />
         </VStack>
       </VStack>
-      <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: userId})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
+      <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: {userId}})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
     </>
   )
 }

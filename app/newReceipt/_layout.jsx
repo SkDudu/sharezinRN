@@ -14,7 +14,7 @@ export default function Layout() {
       <Stack.Screen 
         name="copyCodeShare"
         options={{
-          title: "Recibo compartilhado criado",
+          title: "Recibo criado!",
           headerShown: true,
           headerShadowVisible: false,
           headerBackVisible: false

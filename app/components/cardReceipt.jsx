@@ -6,7 +6,7 @@ export default function cardReceipt(item) {
   return (
     <NativeBaseProvider>
       <Link href={{pathname: "/receiptDetails", params: {receiptId: item.id}}} asChild>
-        <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2}>
+        <Pressable bgColor={"#ececec"} w={"full"} height={"32"} p={2} rounded={"md"} space={2} mb={2}>
           <HStack justifyContent={"space-between"} pb={2}>
             <HStack alignItems={"center"} space={1}>
               <ReceiptText color={"black"} size={22}/>
