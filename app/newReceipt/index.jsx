@@ -54,7 +54,7 @@ export default function newReceipt() {
         router.replace({pathname: "/newReceipt/copyCodeShare", params: {code}})
         toast.show({
           description: "Recibo criado com sucesso!",
-          placement: "bottom",
+          placement: "top",
           variant: "solid",
         })
       }

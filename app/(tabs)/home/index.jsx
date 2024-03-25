@@ -21,25 +21,19 @@ export default function Home() {
     }
   }
 
-  function emptyReceipt(){
-    return(
-      <CardReceiptEmpty />
-    )
-  }
-
   useEffect(() => {
     const user = userId ? userId : undefined
-    if(user !== undefined){
+    if(user !== undefined && user !== null){
       async function fetchReceipts(){
         const { data, error } = await supabase
         .from('receipt')
         .select("*")
         .eq('user', user)
   
-        if(data !== undefined){
+        if(data !== undefined && data !== null){
           setReceiptData(data)
         }else{
-          Alert.alert(error.message)
+          Alert.alert("Problemas em recuperar dados, feche o aplicativo e abra novamente.")
         }
       }
       
@@ -47,7 +41,6 @@ export default function Home() {
     }
 
     getUser()
-    fetchReceipts()
   }, [userId])
 
   return (
@@ -66,7 +59,7 @@ export default function Home() {
         
         <VStack space={2}>
           <Text fontSize={20} fontWeight={"normal"}>Contas abertas</Text>
-          {receiptData==null && receiptData==undefined ? <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } /> : <CardReceiptEmpty />}
+          {receiptData ? <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } /> : <CardReceiptEmpty />}
         </VStack>
       </VStack>
       <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: {userId}})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
