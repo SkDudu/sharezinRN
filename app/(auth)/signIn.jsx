@@ -1,35 +1,48 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
 import { AtSign, RectangleEllipsis } from 'lucide-react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Link, router } from 'expo-router';
 
 import {supabase} from "../../lib/supabase"
 
-import { Box, Button, Image, NativeBaseProvider, Pressable, Text, VStack, View, ZStack, Icon, Input } from "native-base";
+import { Alert, Button, Image, NativeBaseProvider, Text, VStack, View, ZStack, Icon, Input, useToast } from "native-base";
 
 import bg from "../../assets/bg.png"
 import logo from "../../assets/logo.png"
 
 export default function singIn() {
+  const toast = useToast();
+  
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
 
   async function signIn(){
-    setLoading(true)
-    const {error} = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    })
-
-    if(error){
-      Alert.alert(error.message)
-      setLoading(false)
+    if(email==0 && password==0){
+      toast.show({
+        description: "Preencha os campos para realizar o login.",
+        placement: "bottom",
+        variant: "solid",
+      })
     }else{
-      router.replace("/home")
+      setLoading(true)
+      const {error} = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      })
+
+      if(error){
+        toast.show({
+          description: "Problemas com login. Verifique suas credenciais.",
+          placement: "bottom",
+          variant: "solid",
+        })
+        setLoading(false)
+      }else{
+        router.replace("/home")
+      }
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
