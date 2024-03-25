@@ -3,11 +3,12 @@ import { Alert } from 'react-native';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 
 import { Music4, Percent, QrCode, User, Utensils } from 'lucide-react-native';
-import { StatusBar, VStack, Text, Input, Icon, Button, View } from 'native-base';
+import { StatusBar, VStack, Text, Input, Icon, Button, View, useToast } from 'native-base';
 
 import {supabase} from "../../lib/supabase"
 
 export default function newReceipt() {
+  const toast = useToast();
   const { userId } = useLocalSearchParams();
   const [nameReceipt, setNameReceipt] = useState("")
   const [nameRestaurant, setNameRestaurant] = useState("")
@@ -16,32 +17,50 @@ export default function newReceipt() {
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
 
+  let date = new Date()
+
   async function newReceipt(){
-    setLoading(true)
-    const {error} = await supabase
-      .from("receipt")
-      .insert({
-        created_at: Date(),
-        restaurant_name: nameRestaurant,
-        name_receipt: nameReceipt,
-        user: userId,
-        status_receipt: true,
-        tax_garcom: taxWaiter,
-        tax_cover: taxCover,
-        codeInvite: code,
-        cost_total: 0,
+    if(nameReceipt==0 && nameRestaurant==0 && taxWaiter==0 && taxCover==0 && code==0){
+      toast.show({
+        description: "Preencha os campos para realizar o cadastro.",
+        placement: "bottom",
+        variant: "solid",
       })
-
-    if(error){
-      Alert.alert(error.message)
-      setLoading(false)
     }else{
-      router.replace({pathname: "/newReceipt/copyCodeShare", params: {code}})
-    }
-    setLoading(false)
-  }
+      setLoading(true)
+      const {error} = await supabase
+        .from("receipt")
+        .insert({
+          created_at: date,
+          restaurant_name: nameRestaurant,
+          name_receipt: nameReceipt,
+          user: userId,
+          status_receipt: true,
+          tax_garcom: taxWaiter,
+          tax_cover: taxCover,
+          codeInvite: code,
+          cost_total: 0,
+        })
 
-  console.log('newReceipt:', userId)
+      if(error){
+        Alert.alert(error.message)
+        toast.show({
+          description: "Problemas no cadastro de recibos. Tente novamente.",
+          placement: "bottom",
+          variant: "solid",
+        })
+        setLoading(false)
+      }else{
+        router.replace({pathname: "/newReceipt/copyCodeShare", params: {code}})
+        toast.show({
+          description: "Recibo criado com sucesso!",
+          placement: "bottom",
+          variant: "solid",
+        })
+      }
+      setLoading(false)
+    }
+  }
 
   return (
     <>
