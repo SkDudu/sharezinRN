@@ -7,6 +7,7 @@ import { EllipsisVertical, Music4, Pencil, Percent, PlusCircle, ReceiptIcon, Rec
 import { Actionsheet, AlertDialog, Button, FlatList, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose } from 'native-base';
 
 import CardParticipantHistoric from '../components/cardParticipantHistoric';
+import CardParticipantEmpty from '../components/cardParticipantEmpty';
 
 export default function index() {
   const { receiptId } = useLocalSearchParams();
@@ -19,7 +20,7 @@ export default function index() {
   //Receipts
   const [name_receipt, setName_receipt] = useState()
   const [restaurant_name, setRestaurant_name] = useState()
-  const [cost_total, setConst_total] = useState()
+  const [cost_total, setCost_total] = useState()
   const [tax_garcom, setTax_garcom] = useState()
   const [tax_cover, setTax_cover] = useState()
 
@@ -36,7 +37,7 @@ export default function index() {
       if(data !== null && data !== undefined){
         setName_receipt(data[0].name_receipt)
         setRestaurant_name(data[0].restaurant_name)
-        setConst_total(data[0].cost_total)
+        setCost_total(data[0].cost_total)
         setTax_cover(data[0].tax_cover)
         setTax_garcom(data[0].tax_garcom)
       }else{
@@ -49,11 +50,17 @@ export default function index() {
       .from('historic')
       .select()
       .eq("receipt_id", receiptId)
+      .order('created_at', { ascending: false })
 
-      if(data !== null && data !== undefined){
+      if(error){
+        toast.show({
+          description: "Problemas em recuperar dados, feche o aplicativo e abra novamente.",
+          placement: "bottom",
+          variant: "solid",
+        })
+      }else if(data !== null && data !== undefined){
         //console.log("Historico de pedidos", data)
         setHistoricData(data)
-        setCostOrder(data[0].cost_parcial)
       }
     }
 
@@ -119,7 +126,7 @@ export default function index() {
         </View>
         <View>
           <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Histórico de pedidos</Text>
-          <FlatList data={historicData} keyExtractor={item => item.id} renderItem={({item}) => <CardParticipantHistoric {...item}/>}/>
+          {historicData!==null ? <CardParticipantEmpty /> : <FlatList data={historicData} keyExtractor={item => item.id} renderItem={({item}) => <CardParticipantHistoric {...item}/>}/>}
         </View>
       </VStack>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
