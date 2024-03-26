@@ -2,10 +2,12 @@ import React from 'react';
 import { MapPin, Pin, ReceiptText } from "lucide-react-native";
 import { AlertDialog, Badge, Button, HStack, NativeBaseProvider, Pressable, Text, VStack, View } from "native-base";
 
-export default function cardReceiptSearch() {
+export default function cardReceiptSearch(item) {
   const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef(null);
+
+  const date = new Date(item.created_at);
 
   return (
     <NativeBaseProvider>
@@ -13,13 +15,13 @@ export default function cardReceiptSearch() {
         <HStack justifyContent={"space-between"} pb={2}>
           <HStack alignItems={"center"} space={1}>
             <ReceiptText color={"black"} size={22}/>
-            <Text fontSize={14} fontWeight={"normal"}>Conta do praiow</Text>
+            <Text fontSize={14} fontWeight={"normal"}>{item.name_receipt}</Text>
           </HStack>
-          <Text fontSize={12} fontWeight={"normal"}>22/03/2024</Text>
+          <Text fontSize={12} fontWeight={"normal"}>{date.toLocaleString()}</Text>
         </HStack>
         <HStack alignItems={"center"} space={1}>
           <MapPin color={"#717171"} size={18}/>
-          <Text color={"#717171"}>Aldeota</Text>
+          <Text color={"#717171"}>{item.restaurant_name}</Text>
         </HStack>
       </Pressable>
 

@@ -3,6 +3,8 @@ import { MapPin, Pin, ReceiptText } from "lucide-react-native";
 import { Badge, HStack, NativeBaseProvider, Pressable, Text, VStack, View } from "native-base";
 
 export default function cardReceipt(item) {
+  const date = new Date(item.created_at);
+
   return (
     <NativeBaseProvider>
       <Link href={{pathname: "/receiptDetails", params: {receiptId: item.id}}} asChild>
@@ -12,7 +14,7 @@ export default function cardReceipt(item) {
               <ReceiptText color={"black"} size={22}/>
               <Text fontSize={14} fontWeight={"normal"}>{item.name_receipt}</Text>
             </HStack>
-            <Text fontSize={12} fontWeight={"normal"}>{item.created_at}</Text>
+            <Text fontSize={12} fontWeight={"normal"}>{date.toLocaleString()}</Text>
           </HStack>
           <HStack alignItems={"center"} space={1}>
             <MapPin color={"#717171"} size={18}/>

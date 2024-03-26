@@ -43,7 +43,6 @@ export default function newReceipt() {
         })
 
       if(error){
-        Alert.alert(error.message)
         toast.show({
           description: "Problemas no cadastro de recibos. Tente novamente.",
           placement: "bottom",

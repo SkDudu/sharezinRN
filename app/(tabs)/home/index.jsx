@@ -48,18 +48,16 @@ export default function Home() {
       <StatusBar barStyle={'dark-content'} />
       <VStack mt={10} px={3} space={4}>
         <Text fontSize={22} fontWeight={"bold"}>Encontre a conta que seu amigo fez para a saideira!</Text>
-        <Link href="searchReceipt" asChild>
-          <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"#0b0c10"} rounded={"md"}>
-              <HStack space={2} alignItems={'center'}>
-                <PlusCircle size={20} color={"white"}/>
-                <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"white"}>Procure a conta pelo código</Text>
-              </HStack>
-          </Button>
-        </Link>
+        <Button onPress={() => {router.push({pathname: "/searchReceipt", params: {userId}})}} width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"#0b0c10"} rounded={"md"}>
+          <HStack space={2} alignItems={'center'}>
+            <PlusCircle size={20} color={"white"}/>
+            <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"white"}>Procure a conta pelo código</Text>
+          </HStack>
+        </Button>
         
         <VStack space={2}>
           <Text fontSize={20} fontWeight={"normal"}>Contas abertas</Text>
-          {receiptData ? <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } /> : <CardReceiptEmpty />}
+          {receiptData==null ? <CardReceiptEmpty /> : <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } />}
         </VStack>
       </VStack>
       <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: {userId}})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
