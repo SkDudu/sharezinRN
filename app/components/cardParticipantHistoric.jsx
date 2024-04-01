@@ -13,7 +13,7 @@ export default function cardParticipantHistoric(item) {
                         }}>
                             AJ
                         </Avatar>
-                        <Text fontSize={20} fontWeight={"normal"}>Nome</Text>
+                        <Text fontSize={20} fontWeight={"normal"} isTruncated>{item.user}</Text>
                     </HStack>
 
                     <HStack alignItems={"center"} space={1}>
