@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import {supabase} from "../../lib/supabase"
 import { MapPin, ReceiptText, Search } from 'lucide-react-native';
 import { AlertDialog, Button, FlatList, HStack, Icon, Input, Pressable, StatusBar, Text, VStack, View, useToast } from 'native-base';
@@ -50,7 +50,7 @@ export default function index() {
 
   async function setParticipantInReceipt(){
     setLoading(true)
-    const {data, error} = await supabase
+    const {error} = await supabase
     .from('participant')
     .insert({
       user: userId,
@@ -58,8 +58,22 @@ export default function index() {
       receipt_id: receiptId,
       is_closed: false,
       is_owner: false,
+      created_at: date.toLocaleDateString(),
       updated_at: date.toLocaleDateString()
     })
+
+    setLoading(false)
+
+    if(error){
+      toast.show({
+        description: "Não foi possível entrar no recibo compartilhado.",
+        placement: "bottom",
+        variant: "solid",
+      })
+      onClose()
+    }else{
+      router.push({pathname: "/home"})
+    }
   }
 
   return (
@@ -116,7 +130,7 @@ export default function index() {
                   <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
                     Cancelar
                   </Button>
-                  <Button bgColor={"black"} onPress={onClose}>
+                  <Button bgColor={"black"} onPress={() => setParticipantInReceipt()}>
                     Entrar
                   </Button>
                 </Button.Group>
