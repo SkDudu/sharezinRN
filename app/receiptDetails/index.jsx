@@ -4,13 +4,14 @@ import { Link, router, useLocalSearchParams  } from 'expo-router';
 import {supabase} from "../../lib/supabase"
 
 import { EllipsisVertical, Music4, Pencil, Percent, PlusCircle, ReceiptIcon, ReceiptText, SquareArrowOutUpRight, SquareX } from 'lucide-react-native';
-import { Actionsheet, AlertDialog, Button, FlatList, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose } from 'native-base';
+import { Actionsheet, AlertDialog, Button, FlatList, HStack, Icon, IconButton, Pressable, StatusBar, Text, VStack, View, useDisclose, useToast } from 'native-base';
 
 import CardParticipantHistoric from '../components/cardParticipantHistoric';
 import CardParticipantEmpty from '../components/cardParticipantEmpty';
 
 export default function index() {
   const { receiptId } = useLocalSearchParams();
+  const toast = useToast()
   const {isOpen, onOpen, onClose} = useDisclose();
 
   const [userId, setUserId] = useState()
@@ -76,7 +77,6 @@ export default function index() {
           variant: "solid",
         })
       }else if(data !== null && data !== undefined){
-        //console.log("Historico de pedidos", data)
         setHistoricData(data)
       }
     }
@@ -142,7 +142,7 @@ export default function index() {
         </View>
         <View>
           <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Histórico de pedidos</Text>
-          {historicData!==null ? <CardParticipantEmpty /> : <FlatList data={historicData} keyExtractor={item => item.id} renderItem={({item}) => <CardParticipantHistoric {...item}/>}/>}
+          {historicData==null ? <CardParticipantEmpty /> : <FlatList data={historicData} keyExtractor={item => item.id} renderItem={({item}) => <CardParticipantHistoric {...item}/>}/>}
         </View>
       </VStack>
       <Actionsheet isOpen={isOpen} onClose={onClose}>
