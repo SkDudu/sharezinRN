@@ -34,7 +34,7 @@ export default function singIn() {
       if(error){
         toast.show({
           description: "Problemas com login. Verifique suas credenciais.",
-          placement: "bottom",
+          placement: "top",
           variant: "solid",
         })
         setLoading(false)
