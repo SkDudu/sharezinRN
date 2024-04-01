@@ -5,13 +5,13 @@ import { Link, router } from 'expo-router';
 import {supabase} from "../../../lib/supabase"
 
 import { Plus, PlusCircle } from 'lucide-react-native';
-import { Button, Fab, FlatList, HStack, Icon, StatusBar, Text, VStack } from 'native-base';
+import { Button, Fab, FlatList, HStack, Icon, StatusBar, Text, Toast, VStack, useToast } from 'native-base';
 
 import CardReceipt from '../../components/cardReceipt'
 import CardReceiptEmpty from '../../components/cardReceiptEmpty'
 
 export default function Home() {
-  const [receiptData, setReceiptData] = useState()
+  const [receiptDataOwner, setReceiptDataOwner] = useState([])
   const [userId, setUserId] = useState()
 
   async function getUser(){
@@ -27,13 +27,25 @@ export default function Home() {
       async function fetchReceipts(){
         const { data, error } = await supabase
         .from('receipt')
-        .select("*")
-        .eq('user', user)
+        .select(`
+          id,
+          created_at,
+          restaurant_name,
+          name_receipt,
+          participant(
+            id
+          )
+        `)
+        .eq("user", user)
   
         if(data !== undefined && data !== null){
-          setReceiptData(data)
+          setReceiptDataOwner(data)
         }else{
-          Alert.alert("Problemas em recuperar dados, feche o aplicativo e abra novamente.")
+          Toast.show({
+            description: "Problemas em recuperar dados, feche o aplicativo e abra novamente.",
+            placement: "bottom",
+            variant: "solid",
+          })
         }
       }
       
@@ -57,7 +69,7 @@ export default function Home() {
         
         <VStack space={2}>
           <Text fontSize={20} fontWeight={"normal"}>Contas abertas</Text>
-          {receiptData==null ? <CardReceiptEmpty /> : <FlatList data={receiptData} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } />}
+          {receiptDataOwner==null && receiptDataOwner==undefined ? <CardReceiptEmpty /> : <FlatList data={receiptDataOwner} keyExtractor={item => item.id} renderItem={({item}) => <CardReceipt {...item} /> } />}
         </VStack>
       </VStack>
       <Fab renderInPortal={false} onPress={() => {router.push({pathname: "/newReceipt", params: {userId}})}} bgColor={"black"} shadow={2} icon={<Plus color={"white"} size={30}/>} />
