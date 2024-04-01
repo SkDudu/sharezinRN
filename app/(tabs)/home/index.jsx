@@ -31,10 +31,7 @@ export default function Home() {
           id,
           created_at,
           restaurant_name,
-          name_receipt,
-          participant(
-            id
-          )
+          name_receipt
         `)
         .eq("user", user)
   

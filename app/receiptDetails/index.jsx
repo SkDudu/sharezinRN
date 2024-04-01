@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocalSearchParams  } from 'expo-router';
+import { Link, router, useLocalSearchParams  } from 'expo-router';
 
 import {supabase} from "../../lib/supabase"
 
@@ -12,6 +12,8 @@ import CardParticipantEmpty from '../components/cardParticipantEmpty';
 export default function index() {
   const { receiptId } = useLocalSearchParams();
   const {isOpen, onOpen, onClose} = useDisclose();
+
+  const [userId, setUserId] = useState()
   
   const [isOpenDialog, setIsOpen] = React.useState(false);
   const onCloseDialog = () => setIsOpen(false);
@@ -27,11 +29,26 @@ export default function index() {
   //Historic
   const [historicData, setHistoricData] = useState()
 
+  async function getUser(){
+    const { data: { user } } = await supabase.auth.getUser()
+    if(user !== undefined){
+      setUserId(user?.id)
+    }
+  }
+
   useEffect(() => {
     async function fetchReceiptById(){
       const { data, error } = await supabase
       .from('receipt')
-      .select()
+      .select(`
+          id,
+          created_at,
+          restaurant_name,
+          name_receipt,
+          cost_total,
+          tax_cover,
+          tax_garcom
+        `)
       .eq('id', receiptId)
 
       if(data !== null && data !== undefined){
@@ -64,6 +81,7 @@ export default function index() {
       }
     }
 
+    getUser()
     fetchReceiptById()
     fetchHsitoricByReceiptId()
   }, [])
@@ -84,14 +102,12 @@ export default function index() {
             <Text fontSize={"12"} fontWeight={'normal'} color={"white"}>Seu consumo total</Text>
             <Text fontSize={"40"} fontWeight={'normal'} color={"white"}>{cost_total}</Text>
           </VStack>
-            <Link href="/receiptDetails/addCost" asChild>
-                <Button width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
-                    <HStack space={2} alignItems={'center'}>
-                        <PlusCircle size={20} color={"black"}/>
-                        <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"black"}>Adicionar valor</Text>
-                    </HStack>
-                </Button>
-            </Link>
+            <Button onPress={() => {router.push({pathname: "/receiptDetails/addCost", params: {cost_total, userId, receiptId}})}} width={"full"} height={"56px"} alignItems={"center"} justifyContent={'center'} bgColor={"white"} rounded={"md"}>
+              <HStack space={2} alignItems={'center'}>
+                <PlusCircle size={20} color={"black"}/>
+                <Text alignSelf={"center"} fontSize={'md'} fontWeight={'semibold'} color={"black"}>Adicionar valor</Text>
+              </HStack>
+            </Button>
         </View>
         <View>
           <Text fontSize={"22px"} fontWeight={'medium'} color={"black"} pb={2}>Informação geral da conta</Text>
